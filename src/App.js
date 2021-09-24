@@ -1,30 +1,28 @@
 import React from "react";
-
 import { Route, Switch, Redirect } from "react-router-dom";
-import { connect } from 'react-redux';
+import { connect } from "react-redux";
 
-import MovieList from './components/MovieList';
-import Movie from './components/Movie';
+import MovieList from "./components/MovieList";
+import Movie from "./components/Movie";
+import MovieHeader from "./components/MovieHeader";
+import AddMovieForm from "./components/AddMovieForm";
+import FavoriteMovieList from "./components/FavoriteMovieList";
 
-import MovieHeader from './components/MovieHeader';
-
-import AddMovieForm from './components/AddMovieForm';
-import FavoriteMovieList from './components/FavoriteMovieList';
-
-const App = props => {
-  const displayFavorites = true;
-
+const App = (props) => {
   return (
     <div>
       <nav className="navbar navbar-dark bg-dark">
-        <span className="navbar-brand" ><img width="40px" alt="" src="./Lambda-Logo-Red.png"/>Redux Module Project</span>
+        <span className="navbar-brand">
+          <img width="40px" alt="" src="./Lambda-Logo-Red.png" />
+          Redux Module Project
+        </span>
       </nav>
 
       <div className="container">
-        <MovieHeader/>
+        <MovieHeader />
         <div className="row ">
-          {displayFavorites && <FavoriteMovieList/>}
-        
+          {props.displayFavorites && <FavoriteMovieList />}
+
           <Switch>
             <Route exact path="/movies/add">
               <AddMovieForm />
@@ -35,11 +33,11 @@ const App = props => {
             </Route>
 
             <Route path="/movies">
-              <MovieList/>
+              <MovieList />
             </Route>
 
             <Route path="/">
-              <Redirect to="/movies"/>
+              <Redirect to="/movies" />
             </Route>
           </Switch>
         </div>
@@ -48,4 +46,10 @@ const App = props => {
   );
 };
 
-export default App;
+const mapStateToProps = (state) => {
+  return {
+    displayFavorites: state.favoritesReducer.displayFavorites,
+  };
+};
+
+export default connect(mapStateToProps, {})(App);
